@@ -1,10 +1,11 @@
 import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { whatsappHref } from "@/data/site";
 
 export function WhatsAppFab() {
   return (
     <motion.a
-      href="https://wa.me/919999999999"
+      href={whatsappHref}
       target="_blank"
       rel="noreferrer"
       aria-label="Chat on WhatsApp"

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Mail, MapPin, Phone, Check, Instagram, Facebook, Twitter } from "lucide-react";
+import { contact } from "@/data/site";
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
@@ -68,7 +69,7 @@ export default function Contact() {
           >
             <InfoCard icon={MapPin} label="Atelier" value={"24 Cunningham Road\nBengaluru, India 560052"} />
             <InfoCard icon={Mail} label="Email" value="hello@maruthifashions.com" />
-            <InfoCard icon={Phone} label="Phone" value="+91 99999 99999" />
+            <InfoCard icon={Phone} label="Phone / WhatsApp" value={contact.phoneDisplay} />
 
             <div className="glass rounded-3xl p-6">
               <p className="text-[11px] uppercase tracking-luxe text-gold mb-4">Follow</p>

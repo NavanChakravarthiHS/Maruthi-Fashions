@@ -31,6 +31,14 @@ export {
   ig1, ig2, ig3, ig4, ig5, ig6,
 };
 
+/** Update phoneDisplay and whatsappNumber here (WhatsApp: country code + number, digits only, e.g. 919876543210). */
+export const contact = {
+  phoneDisplay: "+91 63601 18735",
+  whatsappNumber: "916360118735",
+};
+
+export const whatsappHref = `https://wa.me/${contact.whatsappNumber}`;
+
 export type Category = {
   slug: string;
   name: string;
