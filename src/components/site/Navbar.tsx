@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search, ShoppingBag, Heart, X } from "lucide-react";
+import { Menu, Search, ShoppingBag, Heart, X, Moon, Sun, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useStore } from "@/store/useStore";
 
 const links = [
   { to: "/", label: "Home" },
   { to: "/shop", label: "Shop" },
+  { to: "/wishlist", label: "Wishlist" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
@@ -14,6 +16,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { cart, wishlist, darkMode, toggleDarkMode, user } = useStore();
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -23,6 +27,9 @@ export function Navbar() {
   }, []);
 
   useEffect(() => { setOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
 
   return (
     <>
@@ -65,18 +72,29 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-1 md:gap-2">
-            <button aria-label="Search" className="p-2.5 text-ivory/80 hover:text-gold transition-colors">
+            <Link to="/shop" aria-label="Search" className="p-2.5 text-ivory/80 hover:text-gold transition-colors">
               <Search className="h-[18px] w-[18px]" />
+            </Link>
+            <button onClick={toggleDarkMode} aria-label="Toggle theme" className="p-2.5 text-ivory/80 hover:text-gold transition-colors">
+              {darkMode ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
             </button>
-            <button aria-label="Wishlist" className="hidden md:inline-flex p-2.5 text-ivory/80 hover:text-gold transition-colors">
-              <Heart className="h-[18px] w-[18px]" />
-            </button>
-            <button aria-label="Cart" className="relative p-2.5 text-ivory/80 hover:text-gold transition-colors">
+            <Link to="/wishlist" aria-label="Wishlist" className="hidden md:inline-flex relative p-2.5 text-ivory/80 hover:text-gold transition-colors">
+              <Heart className={`h-[18px] w-[18px] ${wishlist.length > 0 ? "fill-gold text-gold" : ""}`} />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 rounded-full bg-gold px-1 text-noir text-[10px] font-semibold flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+            <Link to="/cart" aria-label="Cart" className="relative p-2.5 text-ivory/80 hover:text-gold transition-colors">
               <ShoppingBag className="h-[18px] w-[18px]" />
               <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-gold text-noir text-[10px] font-semibold flex items-center justify-center">
-                2
+                {cartCount}
               </span>
-            </button>
+            </Link>
+            <Link to={user ? "/" : "/login"} aria-label="Account" className="hidden md:inline-flex p-2.5 text-ivory/80 hover:text-gold transition-colors">
+              <User className="h-[18px] w-[18px]" />
+            </Link>
             <button
               aria-label="Menu"
               className="md:hidden p-2.5 text-ivory"
@@ -94,7 +112,7 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] md:hidden"
+            className="fixed inset-0 z-60 md:hidden"
           >
             <div className="absolute inset-0 bg-noir/80 backdrop-blur-xl" onClick={() => setOpen(false)} />
             <motion.aside
@@ -120,6 +138,14 @@ export function Navbar() {
                   </Link>
                 ))}
               </nav>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <Link to="/cart" className="rounded-lg border border-white/20 px-4 py-3 text-center text-sm text-ivory/80">
+                  Cart
+                </Link>
+                <Link to="/login" className="rounded-lg border border-white/20 px-4 py-3 text-center text-sm text-ivory/80">
+                  {user ? "Account" : "Login"}
+                </Link>
+              </div>
               <div className="mt-auto text-[11px] uppercase tracking-luxe text-ivory/40">
                 Crafted in India
               </div>

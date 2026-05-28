@@ -83,6 +83,20 @@
   /* same — site is dark-only */
 }
 
+html:not(.dark) {
+  --noir: oklch(0.97 0.003 70);
+  --charcoal: oklch(0.92 0.004 65);
+  --ivory: oklch(0.17 0.01 60);
+  --gold: oklch(0.66 0.13 78);
+  --gold-soft: oklch(0.72 0.1 80);
+  --background: var(--noir);
+  --foreground: var(--ivory);
+  --card: oklch(0.90 0.004 60);
+  --card-foreground: var(--ivory);
+  --popover: oklch(0.90 0.004 60);
+  --popover-foreground: var(--ivory);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
