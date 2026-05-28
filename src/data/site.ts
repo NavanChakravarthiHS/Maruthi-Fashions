@@ -39,6 +39,16 @@ export const contact = {
 
 export const whatsappHref = `https://wa.me/${contact.whatsappNumber}`;
 
+export const socialLinks = {
+  instagram: "https://www.instagram.com/maruthi_fashion_mens/",
+  facebook: "#",
+  twitter: "#",
+  youtube: "#",
+} as const;
+
+export const PRODUCT_SIZES = ["S", "M", "L", "XL", "XXL"] as const;
+export type ProductSize = (typeof PRODUCT_SIZES)[number];
+
 export type Category = {
   slug: string;
   name: string;
@@ -64,7 +74,7 @@ export type Product = {
   specifications: string[];
   images: string[];
   colors: string[];
-  sizes: Array<"S" | "M" | "L" | "XL">;
+  sizes: ProductSize[];
   stock: number;
   offers: string[];
   rating: number;
@@ -85,7 +95,7 @@ export const products: Product[] = [
     specifications: ["240 GSM combed cotton", "Drop shoulder fit", "Bio-wash finish", "Made in India"],
     images: [p1, catTees, p7, p2],
     colors: ["Onyx Black", "Stone Grey", "Ivory White"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 5,
     offers: ["10% off on prepaid orders", "Buy 2 and get free shipping", "5% cashback on UPI payments"],
     rating: 4.7,
@@ -104,7 +114,7 @@ export const products: Product[] = [
     specifications: ["Silk blend weave", "Relaxed fit", "Camp collar", "Mother of pearl buttons"],
     images: [p2, catShirts, p7, p3],
     colors: ["Noir", "Olive", "Sand"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 9,
     offers: ["Flat 15% with code LUXE15", "Free premium gift wrap", "No cost EMI above ₹4,999"],
     rating: 4.8,
@@ -123,7 +133,7 @@ export const products: Product[] = [
     specifications: ["11 oz stretch denim", "Slim taper fit", "Fade-resistant wash", "YKK zip"],
     images: [p3, catDenim, p1, p4],
     colors: ["Onyx", "Indigo", "Washed Black"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 14,
     offers: ["Extra 5% off on 2 denim pieces", "Free exchange in 7 days", "Instant bank discount up to ₹500"],
     rating: 4.6,
@@ -141,7 +151,7 @@ export const products: Product[] = [
     specifications: ["420 GSM brushed fleece", "Double-lined hood", "Ribbed cuffs and hem", "Metal tip drawcords"],
     images: [p4, catHoodies, p1, p5],
     colors: ["Midnight", "Charcoal", "Sandstone"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 3,
     offers: ["Free shipping + COD", "Weekend flash deal 10% off", "Premium care guide included"],
     rating: 4.9,
@@ -160,7 +170,7 @@ export const products: Product[] = [
     specifications: ["Italian blend suiting", "Structured shoulder", "Hand-finished piping", "Viscose lining"],
     images: [p5, catEthnic, p2, p8],
     colors: ["Royal Black", "Ivory", "Wine"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 2,
     offers: ["Complimentary alteration assistance", "Priority festive delivery", "Exchange available on size mismatch"],
     rating: 4.8,
@@ -179,7 +189,7 @@ export const products: Product[] = [
     specifications: ["Full-grain leather", "6 card slots", "RFID safe", "Handcrafted edge paint"],
     images: [p6, catAccessories, p8, p2],
     colors: ["Tan", "Noir", "Chocolate"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 18,
     offers: ["Combo offer with belts", "5% prepaid discount", "Gift-ready packaging"],
     rating: 4.5,
@@ -197,7 +207,7 @@ export const products: Product[] = [
     specifications: ["Premium linen blend", "Boxy overshirt fit", "Dual pocket front", "Soft enzyme wash"],
     images: [p7, catShirts, p2, p3],
     colors: ["Olive", "Stone", "Noir"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 7,
     offers: ["Flat ₹300 off above ₹2,999", "Free exchange on first order", "Loyalty points bonus"],
     rating: 4.7,
@@ -216,7 +226,7 @@ export const products: Product[] = [
     specifications: ["Top-grain leather upper", "Cushioned insole", "TPR outsole", "Hand-polished finish"],
     images: [p8, catAccessories, p5, p3],
     colors: ["Noir", "Tan"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 4,
     offers: ["No cost EMI available", "Free premium shoe bag", "15-day returns"],
     rating: 4.6,
@@ -234,7 +244,7 @@ export const products: Product[] = [
     specifications: ["220 GSM cotton", "Relaxed fit", "Minimal seam finishing", "Colorfast dye"],
     images: [catTees, p1, p7, p2],
     colors: ["Carbon", "Off White"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 12,
     offers: ["Buy any 2 tees, save ₹400", "Free shipping over ₹1,999", "UPI cashback"],
     rating: 4.4,
@@ -252,7 +262,7 @@ export const products: Product[] = [
     specifications: ["Cotton sateen fabric", "Slim tailored fit", "Contrast cuff detail", "Wrinkle control finish"],
     images: [catShirts, p2, p7, p4],
     colors: ["Pearl White", "Powder Blue"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 11,
     offers: ["Flat 10% on formal edit", "Express delivery in metros", "Easy replacement"],
     rating: 4.5,
@@ -270,7 +280,7 @@ export const products: Product[] = [
     specifications: ["Selvedge weave", "Mid-rise", "Tapered leg", "Durable rivets"],
     images: [catDenim, p3, p1, p8],
     colors: ["Indigo", "Jet Black"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 8,
     offers: ["Combo savings on denim + shirts", "Free alteration guide", "7-day easy return"],
     rating: 4.6,
@@ -288,7 +298,7 @@ export const products: Product[] = [
     specifications: ["320 GSM fleece", "Kangaroo pocket", "Drop shoulder", "Anti-pilling finish"],
     images: [catHoodies, p4, p1, p2],
     colors: ["Midnight", "Graphite"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 6,
     offers: ["Flat ₹250 off", "Free shipping on prepaid", "Exclusive member pricing"],
     rating: 4.7,
@@ -307,7 +317,7 @@ export const products: Product[] = [
     specifications: ["Jacquard fabric", "Hand zardozi accents", "Structured shoulder", "Premium lining"],
     images: [catEthnic, p5, p2, p8],
     colors: ["Ivory", "Champagne"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 2,
     offers: ["Festive premium styling consult", "Priority shipping", "Easy size swap assistance"],
     rating: 4.9,
@@ -326,7 +336,7 @@ export const products: Product[] = [
     specifications: ["Stainless steel case", "Japanese movement", "Scratch-resistant glass", "3 ATM water resistance"],
     images: [catAccessories, p6, p8, p3],
     colors: ["Gold Noir", "Silver Noir"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 16,
     offers: ["2-year warranty", "Free premium strap kit", "Pay later options"],
     rating: 4.5,
@@ -345,7 +355,7 @@ export const products: Product[] = [
     specifications: ["230 GSM cotton", "Drop shoulder", "Pre-shrunk", "Ultra-soft wash"],
     images: [p1, catTees, p7, p2],
     colors: ["Stone", "Noir"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 10,
     offers: ["Bundle and save ₹500", "Free express shipping", "First-order 10% off"],
     rating: 4.3,
@@ -363,7 +373,7 @@ export const products: Product[] = [
     specifications: ["Wool blend twill", "Relaxed structure", "Buttoned cuffs", "Premium lining details"],
     images: [p7, catShirts, p2, p4],
     colors: ["Charcoal", "Olive"],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
     stock: 5,
     offers: ["Seasonal 12% off", "Free insured shipping", "No-cost EMI above ₹3,000"],
     rating: 4.8,

@@ -1,7 +1,13 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Mail, MapPin, Phone, Check, Instagram, Facebook, Twitter } from "lucide-react";
-import { contact } from "@/data/site";
+import { contact, socialLinks } from "@/data/site";
+
+const contactSocials = [
+  { Icon: Instagram, href: socialLinks.instagram, label: "Instagram" },
+  { Icon: Facebook, href: socialLinks.facebook, label: "Facebook" },
+  { Icon: Twitter, href: socialLinks.twitter, label: "Twitter" },
+] as const;
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
@@ -67,15 +73,22 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="lg:col-span-5 space-y-6"
           >
-            <InfoCard icon={MapPin} label="Atelier" value={"24 Cunningham Road\nBengaluru, India 560052"} />
+            <InfoCard icon={MapPin} label="Atelier" value={"Manchenahalli\n Chikkaballapur Road, India 561211"} />
             <InfoCard icon={Mail} label="Email" value="hello@maruthifashions.com" />
             <InfoCard icon={Phone} label="Phone / WhatsApp" value={contact.phoneDisplay} />
 
             <div className="glass rounded-3xl p-6">
               <p className="text-[11px] uppercase tracking-luxe text-gold mb-4">Follow</p>
               <div className="flex items-center gap-3">
-                {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                  <a key={i} href="#" className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-ivory/70 hover:border-gold hover:text-gold transition-all">
+                {contactSocials.map(({ Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
+                    aria-label={label}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-ivory/70 hover:border-gold hover:text-gold transition-all"
+                  >
                     <Icon className="h-4 w-4" />
                   </a>
                 ))}

@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Heart, Minus, Plus, ShieldCheck, ShoppingCart, Truck } from "lucide-react";
-import { products } from "@/data/site";
+import { products, type ProductSize } from "@/data/site";
 import { ProductCard } from "@/components/site/ProductCard";
 import { RatingStars } from "@/components/site/RatingStars";
+import { WhatsAppBookingButton } from "@/components/site/WhatsAppBookingButton";
+import { BookingPriceSummary } from "@/components/site/BookingPriceSummary";
+import { calculateBookingPrice } from "@/lib/pricing";
 import { useStore } from "@/store/useStore";
 import { toast } from "sonner";
 
@@ -36,8 +39,8 @@ export default function ProductDetails() {
   const navigate = useNavigate();
   const product = useMemo(() => products.find((item) => item.id === productId), [productId]);
   const [activeImage, setActiveImage] = useState(0);
-  const [size, setSize] = useState<"S" | "M" | "L" | "XL">("M");
-  const [color, setColor] = useState(product?.colors[0] ?? "Noir");
+  const [size, setSize] = useState<ProductSize | null>(null);
+  const [color, setColor] = useState(product?.colors[0] ?? "");
   const [quantity, setQuantity] = useState(1);
   const [hoverPosition, setHoverPosition] = useState({ x: 50, y: 50 });
   const [reviewText, setReviewText] = useState("");
@@ -55,6 +58,25 @@ export default function ProductDetails() {
       addRecentlyViewed(productId);
     }
   }, [addRecentlyViewed, productId]);
+
+  useEffect(() => {
+    setSize(null);
+    setQuantity(1);
+    setActiveImage(0);
+    if (product) {
+      setColor(product.colors[0] ?? "");
+    }
+  }, [productId, product]);
+
+  const bookingPrice = useMemo(() => {
+    if (!product) {
+      return null;
+    }
+    return calculateBookingPrice(
+      { price: product.price, mrp: product.mrp, offers: product.offers, category: product.category },
+      quantity,
+    );
+  }, [product, quantity]);
 
   if (!product) {
     return (
@@ -97,12 +119,20 @@ export default function ProductDetails() {
   const stockWarning = product.stock < 6;
 
   const handleAddToCart = () => {
+    if (!size) {
+      toast.error("Please select a size");
+      return;
+    }
     addToCart({ productId: product.id, quantity, size, color });
     addRecentlyViewed(product.id);
     toast.success("Added to cart");
   };
 
   const handleBuyNow = () => {
+    if (!size) {
+      toast.error("Please select a size");
+      return;
+    }
     addToCart({ productId: product.id, quantity, size, color });
     addRecentlyViewed(product.id);
     navigate("/checkout");
@@ -187,38 +217,49 @@ export default function ProductDetails() {
             </div>
 
             <div>
-              <p className="mb-2 text-xs uppercase tracking-luxe text-ivory/50">Size</p>
-              <div className="flex gap-2">
+              <p className="mb-2 text-xs uppercase tracking-luxe text-ivory/50">
+                Size <span className="text-gold">*</span>
+              </p>
+              <div className="flex flex-wrap gap-2">
                 {product.sizes.map((item) => (
                   <button
                     key={item}
+                    type="button"
                     onClick={() => setSize(item)}
-                    className={`h-10 w-10 rounded-lg border text-sm ${
-                      size === item ? "border-gold text-gold" : "border-white/20 text-ivory/70"
+                    className={`h-10 min-w-10 rounded-lg border px-3 text-sm transition-all duration-200 ${
+                      size === item
+                        ? "border-gold bg-gold/10 text-gold scale-105"
+                        : "border-white/20 text-ivory/70 hover:border-white/40"
                     }`}
                   >
                     {item}
                   </button>
                 ))}
               </div>
+              {!size && (
+                <p className="mt-2 text-xs text-amber-300/90">Select a size to enable WhatsApp booking</p>
+              )}
             </div>
 
-            <div>
-              <p className="mb-2 text-xs uppercase tracking-luxe text-ivory/50">Color</p>
-              <div className="flex flex-wrap gap-2">
-                {product.colors.map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => setColor(item)}
-                    className={`rounded-full border px-4 py-2 text-xs uppercase tracking-wide ${
-                      color === item ? "border-gold text-gold" : "border-white/20 text-ivory/65"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
+            {product.colors.length > 0 && (
+              <div>
+                <p className="mb-2 text-xs uppercase tracking-luxe text-ivory/50">Color</p>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => setColor(item)}
+                      className={`rounded-full border px-4 py-2 text-xs uppercase tracking-wide transition-all duration-200 ${
+                        color === item ? "border-gold text-gold bg-gold/10" : "border-white/20 text-ivory/65 hover:border-white/40"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex items-center gap-3">
               <p className="text-xs uppercase tracking-luxe text-ivory/50">Quantity</p>
@@ -241,16 +282,27 @@ export default function ProductDetails() {
               {stockWarning && <p className="mt-1 text-amber-300">Only few left. Order soon.</p>}
             </div>
 
+            {bookingPrice && <BookingPriceSummary breakdown={bookingPrice} />}
+
             <div className="grid gap-3">
+              <WhatsAppBookingButton
+                productName={product.name}
+                productImage={product.images[activeImage] ?? product.image}
+                size={size}
+                color={color || undefined}
+                pricing={bookingPrice!}
+              />
               <button
                 onClick={handleAddToCart}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold uppercase tracking-luxe text-noir hover:bg-gold-soft"
+                disabled={!size}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold uppercase tracking-luxe text-noir hover:bg-gold-soft disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ShoppingCart className="h-4 w-4" /> Add to cart
               </button>
               <button
                 onClick={handleBuyNow}
-                className="rounded-full border border-white/25 bg-noir px-5 py-3 text-sm uppercase tracking-luxe text-ivory hover:border-gold hover:text-gold"
+                disabled={!size}
+                className="rounded-full border border-white/25 bg-noir px-5 py-3 text-sm uppercase tracking-luxe text-ivory hover:border-gold hover:text-gold disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Buy now
               </button>

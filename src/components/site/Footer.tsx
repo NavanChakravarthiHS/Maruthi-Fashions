@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Twitter, Youtube } from "lucide-react";
+import { socialLinks } from "@/data/site";
+
+const footerSocials = [
+  { Icon: Instagram, href: socialLinks.instagram, label: "Instagram" },
+  { Icon: Facebook, href: socialLinks.facebook, label: "Facebook" },
+  { Icon: Twitter, href: socialLinks.twitter, label: "Twitter" },
+  { Icon: Youtube, href: socialLinks.youtube, label: "YouTube" },
+] as const;
 
 export function Footer() {
   return (
@@ -14,11 +22,13 @@ export function Footer() {
             Quietly luxurious menswear. Tailored in India, designed for a generation that lets the fabric speak.
           </p>
           <div className="mt-6 flex items-center gap-3">
-            {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
+            {footerSocials.map(({ Icon, href, label }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="social"
+                key={label}
+                href={href}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noreferrer noopener" : undefined}
+                aria-label={label}
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-ivory/70 hover:border-gold/50 hover:text-gold transition-all"
               >
                 <Icon className="h-[15px] w-[15px]" />

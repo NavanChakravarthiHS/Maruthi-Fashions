@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Product } from "@/data/site";
+import type { Product, ProductSize } from "@/data/site";
 
 type CartItem = {
   productId: string;
   quantity: number;
-  size: "S" | "M" | "L" | "XL";
+  size: ProductSize;
   color: string;
 };
 
