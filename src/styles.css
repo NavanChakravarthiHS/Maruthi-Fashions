@@ -1,0 +1,179 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Maruthi Fashions — luxury dark design system.
+ * noir (background) / charcoal / ivory / gold accent
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-noir: var(--noir);
+  --color-charcoal: var(--charcoal);
+  --color-ivory: var(--ivory);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+
+  --font-display: "Cormorant Garamond", "Playfair Display", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.5rem;
+
+  --noir: oklch(0.12 0 0);
+  --charcoal: oklch(0.18 0.005 60);
+  --ivory: oklch(0.96 0.012 80);
+  --gold: oklch(0.78 0.11 80);
+  --gold-soft: oklch(0.86 0.09 85);
+
+  --background: var(--noir);
+  --foreground: var(--ivory);
+  --card: oklch(0.16 0.004 60);
+  --card-foreground: var(--ivory);
+  --popover: oklch(0.16 0.004 60);
+  --popover-foreground: var(--ivory);
+  --primary: var(--gold);
+  --primary-foreground: oklch(0.12 0 0);
+  --secondary: oklch(0.22 0.005 60);
+  --secondary-foreground: var(--ivory);
+  --muted: oklch(0.20 0.004 60);
+  --muted-foreground: oklch(0.65 0.01 80);
+  --accent: var(--gold);
+  --accent-foreground: oklch(0.12 0 0);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: var(--ivory);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: var(--gold);
+}
+
+.dark {
+  /* same — site is dark-only */
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-background);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--noir);
+  }
+
+  /* gold scrollbar accent */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--noir); }
+  ::-webkit-scrollbar-thumb { background: oklch(0.30 0.02 80); border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+}
+
+@layer utilities {
+  .glass {
+    background: linear-gradient(180deg, oklch(1 0 0 / 4%), oklch(1 0 0 / 1%));
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid oklch(1 0 0 / 8%);
+  }
+  .glass-strong {
+    background: oklch(0.12 0 0 / 70%);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border-bottom: 1px solid oklch(1 0 0 / 6%);
+  }
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold) 50%, oklch(0.55 0.10 70) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .shadow-luxe {
+    box-shadow:
+      0 1px 0 oklch(1 0 0 / 4%) inset,
+      0 30px 60px -20px oklch(0 0 0 / 60%),
+      0 10px 30px -10px oklch(0 0 0 / 50%);
+  }
+  .ring-gold {
+    box-shadow: 0 0 0 1px oklch(0.78 0.11 80 / 35%);
+  }
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, oklch(0.78 0.11 80 / 50%), transparent);
+  }
+  .tracking-luxe { letter-spacing: 0.32em; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(0.78 0.11 80 / 0) 0%,
+    oklch(0.86 0.09 85 / 1) 50%,
+    oklch(0.78 0.11 80 / 0) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.55 0.18 145 / 0.6); }
+  50% { box-shadow: 0 0 0 16px oklch(0.55 0.18 145 / 0); }
+}
+.pulse-gold { animation: pulse-gold 2.2s ease-out infinite; }
